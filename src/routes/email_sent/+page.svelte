@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Central Park</title>
+	<title>Audrey Hill</title>
 	<meta name="description" content="About this app" />
 </svelte:head>
 

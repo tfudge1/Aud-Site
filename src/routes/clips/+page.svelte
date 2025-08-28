@@ -3,7 +3,7 @@
 	// import welcome from '$lib/images/svelte-welcome.webp';
 </script>
 <svelte:head>
-	<title>Resume</title>
+	<title>Audrey Hill</title>
 	<!-- <meta name="description" content="About this app" /> -->
 </svelte:head>
 
