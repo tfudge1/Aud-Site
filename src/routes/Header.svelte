@@ -1,13 +1,13 @@
 <script>
 	import { page } from '$app/state';
-	import logo from '$lib/images/svelte-logo.svg';
+	import logo from '$lib/images/Headshot.jpg';
 	import github from '$lib/images/github.svg';
 </script>
 
 <header>
 	<div class="corner">
-		<a href="https://svelte.dev/docs/kit">
-			<img src={logo} alt="SvelteKit" />
+		<a href="/">
+			<img src={logo} alt="Audrey Hill" />
 		</a>
 	</div>
 
@@ -35,8 +35,8 @@
 	</nav>
 
 	<div class="corner">
-		<a href="https://github.com/sveltejs/kit">
-			<img src={github} alt="GitHub" />
+		<a >
+			<!-- <img src={github} alt="GitHub" /> -->
 		</a>
 	</div>
 </header>
@@ -61,15 +61,17 @@
 	}
 
 	.corner img {
-		width: 2em;
-		height: 2em;
+		width: 3em;
+		height: 3em;
 		object-fit: contain;
+		border-radius: 40px;
 	}
 
 	nav {
 		display: flex;
 		justify-content: center;
-		--background: rgba(255, 255, 255, 0.7);
+		--background: #2b3a67;
+		color:#FFF;
 	}
 
 	svg {
@@ -117,7 +119,7 @@
 		height: 100%;
 		align-items: center;
 		padding: 0 0.5rem;
-		color: var(--color-text);
+		color: #fff;
 		font-weight: 700;
 		font-size: 0.8rem;
 		text-transform: uppercase;

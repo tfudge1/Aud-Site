@@ -11,7 +11,7 @@
 	<h2>I will do my best to respond in a timely manner</h2>
 	<br />
 	<div class="home-button-wrapper">
-		<a href="/" id="return_button">Take me home</a>
+		<a href="/" id="return_button">Take me Home</a>
 	</div>
 </div>
 <style>

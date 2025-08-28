@@ -1,0 +1,18 @@
+{
+	"/": [
+		"src/routes/+page.js"
+	],
+	"/clips": [
+		"src/routes/clips/+page.js"
+	],
+	"/contact": [
+		"src/routes/contact/+page.js",
+		"src/routes/contact/+page.server.js"
+	],
+	"/email_sent": [
+		"src/routes/email_sent/+page.js"
+	],
+	"/resume": [
+		"src/routes/resume/+page.js"
+	]
+}

@@ -27,7 +27,9 @@
 
 <style>
 	form{
-		background-color: #929090;
+		/* background-color: #132A13;*/
+		background-image:
+		radial-gradient(50% 50% at 50% 50%, var(--color-bg-2) 0%, rgba(255, 255, 255, 0) 100%);
 		width:100%;
 		min-width: 100%;
 	}
@@ -42,6 +44,6 @@
 		max-width: 90vw;
 	}
 	label{
-		color:#000;
+		color:#fff;
 	}
 </style>
