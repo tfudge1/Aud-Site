@@ -42,6 +42,7 @@ declare module '$env/static/private' {
 	export const CONDA_PROMPT_MODIFIER: string;
 	export const GSETTINGS_SCHEMA_DIR_CONDA_BACKUP: string;
 	export const ZDOTDIR: string;
+	export const CURSOR_TRACE_ID: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const MallocNanoZone: string;
 	export const COLOR: string;
@@ -145,6 +146,7 @@ declare module '$env/dynamic/private' {
 		CONDA_PROMPT_MODIFIER: string;
 		GSETTINGS_SCHEMA_DIR_CONDA_BACKUP: string;
 		ZDOTDIR: string;
+		CURSOR_TRACE_ID: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
 		MallocNanoZone: string;
 		COLOR: string;

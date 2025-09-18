@@ -2,6 +2,12 @@
 	"/": [
 		"src/routes/+page.js"
 	],
+	"/api/articles": [
+		"src/routes/api/articles/+server.ts"
+	],
+	"/api/articles/[id]": [
+		"src/routes/api/articles/[id]/+server.ts"
+	],
 	"/clips": [
 		"src/routes/clips/+page.js"
 	],

@@ -27,18 +27,22 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/clips" | "/contact" | "/email_sent" | "/resume";
+		RouteId(): "/" | "/api" | "/api/articles" | "/api/articles/[id]" | "/clips" | "/components" | "/contact" | "/email_sent" | "/resume";
 		RouteParams(): {
-			
+			"/api/articles/[id]": { id: string }
 		};
 		LayoutParams(): {
-			"/": Record<string, never>;
+			"/": { id?: string };
+			"/api": { id?: string };
+			"/api/articles": { id?: string };
+			"/api/articles/[id]": { id: string };
 			"/clips": Record<string, never>;
+			"/components": Record<string, never>;
 			"/contact": Record<string, never>;
 			"/email_sent": Record<string, never>;
 			"/resume": Record<string, never>
 		};
-		Pathname(): "/" | "/clips" | "/clips/" | "/contact" | "/contact/" | "/email_sent" | "/email_sent/" | "/resume" | "/resume/";
+		Pathname(): "/" | "/api" | "/api/" | "/api/articles" | "/api/articles/" | `/api/articles/${string}` & {} | `/api/articles/${string}/` & {} | "/clips" | "/clips/" | "/components" | "/components/" | "/contact" | "/contact/" | "/email_sent" | "/email_sent/" | "/resume" | "/resume/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/favicon.svg" | "/robots.txt" | string & {};
 	}
