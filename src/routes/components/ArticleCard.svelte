@@ -13,7 +13,7 @@
 	}
 </script>
 
-<article class="article-card">
+<a href="/articles/{article.id}" class="article-card">
 	<div class="article-image">
 		<img src={article.imageUrl} alt={article.imageAlt} />
 		<!--<div class="article-category">{article.category}</div>-->
@@ -28,22 +28,23 @@
 			<span class="article-read-time">{article.readTime}</span>
 		</div>
 		
-		{#if article.url}
-			<a href={article.url} class="article-link" target="_blank" rel="noopener noreferrer">
-				Read Full Article →
-			</a>
-		{/if}
+		<div class="article-link">
+			Read Full Article →
+		</div>
 	</div>
-</article>
+</a>
 
 <style>
 	.article-card {
+		display: block;
 		background: rgba(255, 255, 255, 0.1);
 		border-radius: 12px;
 		overflow: hidden;
 		transition: transform 0.3s ease, box-shadow 0.3s ease;
 		backdrop-filter: blur(10px);
 		border: 1px solid rgba(255, 255, 255, 0.2);
+		text-decoration: none;
+		color: inherit;
 	}
 
 	.article-card:hover {
@@ -145,9 +146,8 @@
 		transition: color 0.2s ease;
 	}
 
-	.article-link:hover {
+	.article-card:hover .article-link {
 		color: var(--color-theme-2);
-		text-decoration: none;
 	}
 
 	/* Responsive adjustments */

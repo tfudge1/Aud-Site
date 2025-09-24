@@ -8,6 +8,10 @@
 	"/api/articles/[id]": [
 		"src/routes/api/articles/[id]/+server.ts"
 	],
+	"/articles": [],
+	"/articles/[id]": [
+		"src/routes/articles/[id]/+page.server.ts"
+	],
 	"/clips": [
 		"src/routes/clips/+page.js"
 	],
