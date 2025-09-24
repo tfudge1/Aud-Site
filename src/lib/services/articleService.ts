@@ -1,7 +1,7 @@
 import type { Article, ArticleResponse } from '$lib/types/article';
 
-// Base URL for the API - using local SvelteKit API routes
-const API_BASE_URL = '/api'; // Using relative path for SvelteKit API routes
+// Base URL for the API - using external Prisma CMS
+const API_BASE_URL = 'https://aud-prisma-cms.vercel.app'; // External Prisma CMS API
 
 export class ArticleService {
 	private static baseUrl = API_BASE_URL;
@@ -11,14 +11,31 @@ export class ArticleService {
 	 */
 	static async getArticles(page: number = 1, limit: number = 12): Promise<ArticleResponse> {
 		try {
-			const response = await fetch(`${this.baseUrl}/articles?page=${page}&limit=${limit}`);
+			const response = await fetch(`${this.baseUrl}/articles`);
 			
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 			
 			const data = await response.json();
-			return data;
+			
+			// The API returns an array directly
+			if (Array.isArray(data)) {
+				// Apply pagination manually since the API doesn't support it
+				const startIndex = (page - 1) * limit;
+				const endIndex = startIndex + limit;
+				const paginatedArticles = data.slice(startIndex, endIndex);
+				
+				return {
+					articles: this.transformArticles(paginatedArticles),
+					total: data.length,
+					page,
+					limit
+				};
+			}
+			
+			// Fallback if response format is unexpected
+			return this.getSampleArticles();
 		} catch (error) {
 			console.error('Error fetching articles:', error);
 			// Fallback to local sample data if API fails
@@ -31,13 +48,23 @@ export class ArticleService {
 	 */
 	static async getArticle(id: string): Promise<Article | null> {
 		try {
-			const response = await fetch(`${this.baseUrl}/articles/${id}`);
+			const response = await fetch(`${this.baseUrl}/articles`);
 			
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 			
-			return await response.json();
+			const data = await response.json();
+			
+			if (Array.isArray(data)) {
+				const article = data.find((article: any) => article.id.toString() === id);
+				if (article) {
+					const transformedArticles = this.transformArticles([article]);
+					return transformedArticles[0] || null;
+				}
+			}
+			
+			return null;
 		} catch (error) {
 			console.error('Error fetching article:', error);
 			return null;
@@ -49,14 +76,34 @@ export class ArticleService {
 	 */
 	static async getArticlesByCategory(category: string, page: number = 1, limit: number = 12): Promise<ArticleResponse> {
 		try {
-			const response = await fetch(`${this.baseUrl}/articles/category/${category}?page=${page}&limit=${limit}`);
+			const response = await fetch(`${this.baseUrl}/articles`);
 			
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 			
 			const data = await response.json();
-			return data;
+			
+			if (Array.isArray(data)) {
+				// Filter by category
+				const filteredArticles = data.filter((article: any) => 
+					article.category.toLowerCase() === category.toLowerCase()
+				);
+				
+				// Apply pagination
+				const startIndex = (page - 1) * limit;
+				const endIndex = startIndex + limit;
+				const paginatedArticles = filteredArticles.slice(startIndex, endIndex);
+				
+				return {
+					articles: this.transformArticles(paginatedArticles),
+					total: filteredArticles.length,
+					page,
+					limit
+				};
+			}
+			
+			return this.getSampleArticles();
 		} catch (error) {
 			console.error('Error fetching articles by category:', error);
 			return this.getSampleArticles();
@@ -68,18 +115,60 @@ export class ArticleService {
 	 */
 	static async searchArticles(query: string, page: number = 1, limit: number = 12): Promise<ArticleResponse> {
 		try {
-			const response = await fetch(`${this.baseUrl}/articles/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}`);
+			const response = await fetch(`${this.baseUrl}/articles`);
 			
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 			
 			const data = await response.json();
-			return data;
+			
+			if (Array.isArray(data)) {
+				// Search in title, content, and excerpt
+				const searchLower = query.toLowerCase();
+				const filteredArticles = data.filter((article: any) =>
+					article.title?.toLowerCase().includes(searchLower) ||
+					article.content?.toLowerCase().includes(searchLower) ||
+					article.excerpt?.toLowerCase().includes(searchLower)
+				);
+				
+				// Apply pagination
+				const startIndex = (page - 1) * limit;
+				const endIndex = startIndex + limit;
+				const paginatedArticles = filteredArticles.slice(startIndex, endIndex);
+				
+				return {
+					articles: this.transformArticles(paginatedArticles),
+					total: filteredArticles.length,
+					page,
+					limit
+				};
+			}
+			
+			return this.getSampleArticles();
 		} catch (error) {
 			console.error('Error searching articles:', error);
 			return this.getSampleArticles();
 		}
+	}
+
+	/**
+	 * Transform articles from API format to our standard format
+	 */
+	private static transformArticles(apiArticles: any[]): Article[] {
+		return apiArticles.map((article: any) => ({
+			id: article.id.toString(),
+			title: article.title || 'Untitled Article',
+			content: article.content || '',
+			excerpt: article.excerpt || '',
+			imageUrl: article.imageURL || 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+			imageAlt: article.imageAlt || article.title || 'Article image',
+			publishDate: article.publishDate || new Date().toISOString(),
+			category: article.category || 'General',
+			author: article.author || 'Audrey Hill',
+			readTime: article.readTime || '5 min read',
+			url: article.url ? `${this.baseUrl}${article.url}` : undefined
+		}));
 	}
 
 	/**
